@@ -1,6 +1,6 @@
 
 import React, { useState, useRef, useEffect } from 'react';
-import { Upload, Wand2, RefreshCcw, Download, Eye, AlertCircle, Beaker, ShieldAlert, X, Camera, FlipHorizontal, ChevronRight } from 'lucide-react';
+import { Upload, Wand2, RefreshCcw, Download, Eye, AlertCircle, Beaker, ShieldAlert, X, Camera, FlipHorizontal, ChevronRight, Lightbulb } from 'lucide-react';
 import { gemini } from './geminiService';
 import { View } from './types';
 
@@ -109,7 +109,27 @@ const ImageEditorComponent = ({ onNavigate }: { onNavigate: (view: View) => void
   }, []);
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-12">
+      {/* MODULE BRIEFING HEADER */}
+      <div className="bg-white p-8 rounded-[40px] border border-primary/5 shadow-sm flex flex-col md:flex-row items-center gap-8 animate-in fade-in duration-500">
+        <div className="w-16 h-16 bg-accent/10 rounded-2xl flex items-center justify-center shrink-0 text-accent">
+          <Wand2 size={24} />
+        </div>
+        <div className="flex-1 text-center md:text-left">
+          <h3 className="text-xl font-poppins font-bold text-primary mb-2 flex items-center justify-center md:justify-start gap-2">
+            <span>Module Briefing: Document Vision</span>
+            <div className="px-2 py-0.5 bg-accent/10 rounded text-[8px] font-black text-accent uppercase tracking-tighter">Capture Support</div>
+          </h3>
+          <p className="text-sm text-primary/60 font-medium leading-relaxed max-w-3xl">
+            Contrast and clarity enhancement for legacy document captures. This module focuses on making technical text legible for human reading, not for verification of authenticity.
+          </p>
+        </div>
+        <div className="w-px h-12 bg-primary/5 hidden md:block" />
+        <div className="flex items-center gap-3">
+          <Lightbulb size={24} className="text-accent/30" />
+        </div>
+      </div>
+
       <div className="grid lg:grid-cols-2 gap-8 items-stretch">
         {/* Interaction Pane */}
         <div className="bg-white p-8 lg:p-12 rounded-[48px] shadow-sm border border-primary/5 flex flex-col">

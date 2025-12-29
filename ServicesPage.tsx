@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { 
   BookOpen, 
@@ -164,7 +163,7 @@ const ServicesPage = ({ onNavigate }: { onNavigate: (view: View, subTarget?: str
               </div>
               <h3 className="text-xl font-poppins font-bold text-primary mb-4">Professional Discovery Directory</h3>
               <p className="text-primary/60 text-sm mb-8 leading-relaxed">
-                A neutral directory of verified independent professionals (CAs, CFAs, Consultants). Monitize does not participate in selection, consultations, or outcome management.
+                A neutral directory of verified independent professionals (CAs, CFAs, Legal Experts). Monitize does not participate in selection, consultations, or outcome management.
               </p>
               <ul className="space-y-4 mb-10 flex-1">
                 {[
@@ -179,11 +178,18 @@ const ServicesPage = ({ onNavigate }: { onNavigate: (view: View, subTarget?: str
                   </li>
                 ))}
               </ul>
-              <div className="p-4 bg-primary/[0.02] rounded-xl border border-primary/5">
+              <div className="p-4 bg-primary/[0.02] rounded-xl border border-primary/5 mb-6">
                 <p className="text-[9px] font-bold text-primary/30 leading-relaxed uppercase tracking-widest">
                   Engagement occurs independently of the platform infrastructure.
                 </p>
               </div>
+              <button 
+                onClick={() => onNavigate('services', 'directory')}
+                className="group inline-flex items-center gap-2 text-accent font-bold text-[10px] uppercase tracking-widest"
+              >
+                <span>Open Expert Directory</span>
+                <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
+              </button>
             </article>
 
             {/* Category E: Experimental AI Lab */}

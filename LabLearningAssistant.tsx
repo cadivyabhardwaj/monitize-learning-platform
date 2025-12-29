@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { BookOpen, Sparkles, RefreshCcw, Info, X, Layout, FileText, GraduationCap, Copy, Check, ListChecks, ChevronRight } from 'lucide-react';
+import { BookOpen, Sparkles, RefreshCcw, Info, X, Layout, FileText, GraduationCap, Copy, Check, ListChecks, ChevronRight, Lightbulb } from 'lucide-react';
 import { gemini } from './geminiService';
 import { View } from './types';
 
@@ -47,7 +47,27 @@ const LabLearningAssistant = ({ onNavigate }: { onNavigate: (view: View) => void
   };
 
   return (
-    <div className="space-y-8 animate-in fade-in duration-500">
+    <div className="space-y-12 animate-in fade-in duration-500">
+      {/* MODULE BRIEFING HEADER */}
+      <div className="bg-white p-8 rounded-[40px] border border-primary/5 shadow-sm flex flex-col md:flex-row items-center gap-8">
+        <div className="w-16 h-16 bg-indigo-500/10 rounded-2xl flex items-center justify-center shrink-0 text-indigo-500">
+          <GraduationCap size={24} />
+        </div>
+        <div className="flex-1 text-center md:text-left">
+          <h3 className="text-xl font-poppins font-bold text-primary mb-2 flex items-center justify-center md:justify-start gap-2">
+            <span>Module Briefing: Learning Assistant</span>
+            <div className="px-2 py-0.5 bg-indigo-100 rounded text-[8px] font-black text-indigo-500 uppercase tracking-tighter">Cognitive Aid</div>
+          </h3>
+          <p className="text-sm text-primary/60 font-medium leading-relaxed max-w-3xl">
+            Generates academic revision notes from provided educational text. This module is designed to synthesize dense material into structured points optimized for memory retention and exam preparation.
+          </p>
+        </div>
+        <div className="w-px h-12 bg-primary/5 hidden md:block" />
+        <div className="flex items-center gap-3">
+          <Lightbulb size={24} className="text-indigo-500/30" />
+        </div>
+      </div>
+
       <div className="grid lg:grid-cols-2 gap-8 items-stretch">
         {/* Input Pane */}
         <div className="bg-white p-8 lg:p-12 rounded-[48px] border border-primary/5 shadow-sm flex flex-col">

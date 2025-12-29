@@ -3,7 +3,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { 
   Upload, Type, RefreshCcw, Eye, AlertCircle, ShieldAlert, X, 
   Camera, ChevronRight, Info, FileText, ChevronDown, ChevronUp, 
-  Copy, ShieldCheck, Zap, BookOpen, GraduationCap 
+  Copy, ShieldCheck, Zap, BookOpen, GraduationCap, Lightbulb 
 } from 'lucide-react';
 import { gemini } from './geminiService';
 import { OCRInterpretation, LearningMode, View } from './types';
@@ -144,6 +144,26 @@ const LabOCRInterpreter = ({ onNavigate }: { onNavigate: (view: View) => void })
 
   return (
     <div className="space-y-8 animate-in fade-in duration-500">
+      {/* MODULE BRIEFING HEADER */}
+      <div className="bg-white p-8 rounded-[40px] border border-primary/5 shadow-sm flex flex-col md:flex-row items-center gap-8">
+        <div className="w-16 h-16 bg-purple-500/10 rounded-2xl flex items-center justify-center shrink-0 text-purple-500">
+          <Type size={24} />
+        </div>
+        <div className="flex-1 text-center md:text-left">
+          <h3 className="text-xl font-poppins font-bold text-primary mb-2 flex items-center justify-center md:justify-start gap-2">
+            <span>Module Briefing: OCR Interpreter</span>
+            <div className="px-2 py-0.5 bg-purple-100 rounded text-[8px] font-black text-purple-500 uppercase tracking-tighter">Capture Support</div>
+          </h3>
+          <p className="text-sm text-primary/60 font-medium leading-relaxed max-w-3xl">
+            Experimental text-to-context conversion for general administrative records. This module extracts data and provides a 'Simplified Explanation' to help bridge the gap between technical data and human logic.
+          </p>
+        </div>
+        <div className="w-px h-12 bg-primary/5 hidden md:block" />
+        <div className="flex items-center gap-3">
+          <Lightbulb size={24} className="text-purple-500/30" />
+        </div>
+      </div>
+
       {/* Disclaimer Banner */}
       <div className="bg-primary p-4 rounded-2xl flex items-center justify-center gap-3 text-white/80">
         <ShieldAlert size={18} className="text-accent" />

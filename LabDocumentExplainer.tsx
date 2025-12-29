@@ -1,6 +1,6 @@
 
 import React, { useState, useRef, useEffect } from 'react';
-import { Upload, FileSearch, RefreshCcw, Eye, AlertCircle, ShieldAlert, X, Camera, ChevronRight, Info, FileText, GraduationCap } from 'lucide-react';
+import { Upload, FileSearch, RefreshCcw, Eye, AlertCircle, ShieldAlert, X, Camera, ChevronRight, Info, FileText, GraduationCap, Lightbulb } from 'lucide-react';
 import { gemini } from './geminiService';
 import { View } from './types';
 
@@ -106,7 +106,27 @@ const LabDocumentExplainer = ({ onNavigate }: { onNavigate: (view: View) => void
   }, []);
 
   return (
-    <div className="space-y-8 animate-in fade-in duration-500">
+    <div className="space-y-12 animate-in fade-in duration-500">
+      {/* MODULE BRIEFING HEADER */}
+      <div className="bg-white p-8 rounded-[40px] border border-primary/5 shadow-sm flex flex-col md:flex-row items-center gap-8">
+        <div className="w-16 h-16 bg-emerald-500/10 rounded-2xl flex items-center justify-center shrink-0 text-emerald-500">
+          <FileSearch size={24} />
+        </div>
+        <div className="flex-1 text-center md:text-left">
+          <h3 className="text-xl font-poppins font-bold text-primary mb-2 flex items-center justify-center md:justify-start gap-2">
+            <span>Module Briefing: Document Explainer</span>
+            <div className="px-2 py-0.5 bg-emerald-100 rounded text-[8px] font-black text-emerald-500 uppercase tracking-tighter">Capture Support</div>
+          </h3>
+          <p className="text-sm text-primary/60 font-medium leading-relaxed max-w-3xl">
+            Identifies common sections in administrative forms (like ITR forms or GST certificates) for structural awareness. It helps you understand where key information typically resides in standard documentation.
+          </p>
+        </div>
+        <div className="w-px h-12 bg-primary/5 hidden md:block" />
+        <div className="flex items-center gap-3">
+          <Lightbulb size={24} className="text-emerald-500/30" />
+        </div>
+      </div>
+
       <div className="grid lg:grid-cols-2 gap-8 items-stretch">
         {/* Interaction Pane */}
         <div className="bg-white p-8 lg:p-12 rounded-[48px] shadow-sm border border-primary/5 flex flex-col">

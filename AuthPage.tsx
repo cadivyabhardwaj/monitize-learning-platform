@@ -1,7 +1,8 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
+/* Fixed: Ensure correct hooks are imported from react-router-dom */
 import { useSearchParams, useNavigate } from 'react-router-dom';
-import { ArrowRight, Mail, User, Phone, Lock, CheckCircle2, ShieldCheck, ChevronRight, Info, AlertCircle, Building2, Target } from 'lucide-react';
+import { Mail, User, Lock, CheckCircle2, ShieldCheck, ChevronRight, Info, AlertCircle } from 'lucide-react';
 import { BRAND_NAME } from './constants';
 import { User as UserType, UserCategory, ExperienceLevel } from './types';
 
@@ -44,6 +45,7 @@ const AuthPage = ({ onLoginSuccess }: AuthPageProps) => {
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
+    /* Fixed: Initialize full progress object to match updated User interface */
     setTimeout(() => {
       onLoginSuccess({
         id: 'u_' + Date.now(),
@@ -51,7 +53,9 @@ const AuthPage = ({ onLoginSuccess }: AuthPageProps) => {
         email: formData.email || 'member@monitize.in',
         progress: {
           marketBasics: { level: 1, completedLevels: [], lastUnitId: '' },
-          taxBasics: { reviewed: false }
+          taxBasics: { reviewed: false },
+          completedModuleIds: [],
+          levelProgress: {}
         }
       });
       setLoading(false);
@@ -60,6 +64,7 @@ const AuthPage = ({ onLoginSuccess }: AuthPageProps) => {
 
   const handleSignUpComplete = () => {
     setLoading(true);
+    /* Fixed: Initialize full progress object to match updated User interface */
     setTimeout(() => {
       onLoginSuccess({
         id: 'u_' + Date.now(),
@@ -72,7 +77,9 @@ const AuthPage = ({ onLoginSuccess }: AuthPageProps) => {
         },
         progress: {
           marketBasics: { level: 1, completedLevels: [], lastUnitId: '' },
-          taxBasics: { reviewed: false }
+          taxBasics: { reviewed: false },
+          completedModuleIds: [],
+          levelProgress: {}
         }
       });
       setLoading(false);

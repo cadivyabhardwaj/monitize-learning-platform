@@ -8,6 +8,12 @@ interface ToolsSectionProps {
   onNavigate: (view: View, subTarget?: string) => void;
 }
 
+/**
+ * ToolsSection
+ * 
+ * Public-facing preview of the platform's mathematical simulators.
+ * Calibrated for Indian statutory frameworks.
+ */
 const ToolsSection = ({ onNavigate }: ToolsSectionProps) => {
   /**
    * handleToolClick
@@ -35,22 +41,24 @@ const ToolsSection = ({ onNavigate }: ToolsSectionProps) => {
       <div className="max-w-7xl mx-auto bg-[#0B1C2D] rounded-[40px] p-8 lg:p-16 relative overflow-hidden">
         <div className="relative z-10 grid lg:grid-cols-2 gap-12 items-center">
           <div>
-            <h3 className="text-3xl lg:text-4xl font-poppins font-bold text-white mb-6">Simple Tools for Indian Financial Decisions</h3>
-            <p className="text-white/60 mb-8 max-w-md">Our intuitive calculators and planners are calibrated for Indian tax laws and income slabs to give you instant clarity for estimation and learning purposes.</p>
+            <h3 className="text-3xl lg:text-4xl font-poppins font-bold text-white mb-6">Mathematical Simulators for Indian Frameworks</h3>
+            <p className="text-white/60 mb-8 max-w-md">
+              Neutral planning utilities calibrated for Indian income slabs and statutory tax laws. These tools provide mathematical estimations strictly for conceptual learning and scenario modeling purposes.
+            </p>
             <div className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
               <button 
                 onClick={() => onNavigate('tools')}
                 type="button" 
                 className="bg-[#1FA67A] hover:bg-[#1a8d67] text-white px-8 py-4 rounded-xl font-semibold transition-all focus:ring-2 focus:ring-offset-2 focus:ring-[#1FA67A] focus:outline-none"
               >
-                Explore All Free Tools
+                Access All Planning Utilities
               </button>
               <button 
                 onClick={() => onNavigate('ai-lab')}
                 className="bg-white/10 hover:bg-white/20 text-white px-8 py-4 rounded-xl font-semibold border border-white/10 flex items-center justify-center space-x-2 transition-all focus:ring-2 focus:ring-white outline-none"
               >
                 <Sparkles size={18} />
-                <span>Try AI Lab (Beta)</span>
+                <span>Auxiliary AI Lab (BETA)</span>
               </button>
             </div>
           </div>
@@ -72,7 +80,7 @@ const ToolsSection = ({ onNavigate }: ToolsSectionProps) => {
                     <div className="flex items-center space-x-2">
                       <span className="text-white/40 text-[10px] uppercase font-bold tracking-widest">{tool.category}</span>
                       <span className="w-1 h-1 rounded-full bg-white/20"></span>
-                      <span className="text-accent text-[10px] font-bold uppercase tracking-wider">{tool.actionText}</span>
+                      <span className="text-accent text-[10px] font-bold uppercase tracking-wider">Run Estimation</span>
                     </div>
                   </div>
                 </div>

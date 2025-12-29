@@ -100,7 +100,8 @@ const RiskToleranceReflection = ({ onBack }: { onBack: () => void }) => {
   };
 
   const archetype = useMemo(() => {
-    const counts = Object.values(answers).reduce((acc: any, t) => {
+    // Fixed: Cast Object.values to string[] and explicitly type the accumulator to resolve index type errors
+    const counts = (Object.values(answers) as string[]).reduce((acc: Record<string, number>, t) => {
       acc[t] = (acc[t] || 0) + 1;
       return acc;
     }, {});

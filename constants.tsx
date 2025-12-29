@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { 
   ShieldCheck, BookOpen, Users, TrendingUp, FileText, Briefcase, 
@@ -7,10 +6,10 @@ import {
   LayoutDashboard, CalendarRange, BrainCircuit, GitMerge
 } from 'lucide-react';
 
-export const BRAND_NAME = "MONITIZE";
+export const BRAND_NAME = "Monitize";
 
 export const SEO_CONTENT = {
-  TITLE: "MONITIZE | Financial Clarity & Educational Infrastructure for India",
+  TITLE: "Monitize | Financial Clarity & Educational Infrastructure for India",
   DESCRIPTION: "Independent educational platform for Indian financial logic. Explore tax frameworks, market mechanics, and planning utilities through neutral, non-advisory workspaces."
 };
 
@@ -53,15 +52,15 @@ export const TRUST_INDICATORS = [
 
 export const LEARNING_PATHS = [
   {
-    id: "market-basics",
+    id: "market-investing-basics",
     title: "Market & Investing Basics",
-    description: "A 3-level progression through terminology, participant roles, and behavioral market logic.",
+    description: "A deep 10-level progression through terminology, participant roles, and behavioral market logic.",
     icon: <Globe className="w-8 h-8 text-[#1FA67A]" />,
-    effort: "Fundamental",
+    effort: "Deep",
     topics: [
-      { title: "Participant Roles (Level 1)", type: "Awareness" },
-      { title: "Volatility Mechanics (Level 2)", type: "Framework" },
-      { title: "Behavioral Biases (Level 3)", type: "Mechanical" }
+      { title: "Participant Roles", type: "Awareness" },
+      { title: "Volatility Mechanics", type: "Framework" },
+      { title: "Behavioral Biases", type: "Mechanical" }
     ]
   },
   {
@@ -71,33 +70,33 @@ export const LEARNING_PATHS = [
     icon: <Gavel className="w-8 h-8 text-[#1FA67A]" />,
     effort: "Deep Progression",
     topics: [
-      { title: "FY vs AY Logic (Level 1)", type: "Foundation" },
-      { title: "Heads of Income (Level 2)", type: "Structure" },
-      { title: "Residential Nuance (Level 3)", type: "Nuance" }
+      { title: "FY vs AY Logic", type: "Foundation" },
+      { title: "Heads of Income", type: "Structure" },
+      { title: "Residential Nuance", type: "Nuance" }
     ]
   },
   {
-    id: "pf-basics",
+    id: "pf-foundations",
     title: "Personal Finance Basics",
     description: "Foundational concepts of cash flow, inflation, and risk management within the Indian context.",
     icon: <Target className="w-8 h-8 text-[#1FA67A]" />,
-    effort: "Light",
+    effort: "Deep",
     topics: [
-      { title: "Inflation & Purchasing Power", type: "Video" },
-      { title: "Emergency Fund Logic", type: "Explainer" },
-      { title: "Insurance as Risk Mitigation", type: "Guide" }
+      { title: "Inflation & Power", type: "Video" },
+      { title: "Emergency Fund", type: "Explainer" },
+      { title: "Insurance Risk", type: "Guide" }
     ]
   },
   {
-    id: "business-awareness",
+    id: "business-msme-logic",
     title: "Business & MSME Awareness",
     description: "Financial structures and regulatory readiness frameworks for Indian business owners.",
     icon: <Briefcase className="w-8 h-8 text-[#1FA67A]" />,
     effort: "Deep",
     topics: [
       { title: "Entity Type Logic", type: "Guide" },
-      { title: "GST Registration Thresholds", type: "Checklist" },
-      { title: "Statutory Documentation", type: "Framework" }
+      { title: "GST Registration", type: "Checklist" },
+      { title: "Statutory Docs", type: "Framework" }
     ]
   }
 ];
@@ -107,7 +106,7 @@ export const COMPLIANCE = {
   SERVICE_STANDARD_TITLE: "Platform Responsibility Charter",
   SERVICE_STANDARD_DESC: `${BRAND_NAME} is an educational technology framework. We provide conceptual structures and mathematical modeling tools. We do NOT provide investment advice, tax consultancy, or return-filing services.`,
   DISCLAIMER_TITLE: "General Regulatory Disclaimer",
-  DISCLAIMER_BODY: `All content, including simulator outputs and AI Assistant responses, is strictly for informational and educational purposes. Mathematical models are illustrative and do not account for individual nuances or future regulatory changes. Users should verify all information with a licensed professional before taking action.`,
+  DISCLAIMER_BODY: `All content on Monitize, including simulator outputs and AI Assistant responses, is strictly for informational and educational purposes. Mathematical models are illustrative and do not account for individual nuances or future regulatory changes. Users should verify all information with a licensed professional before taking action.`,
   FOOTER_TAGLINE: "Educational Integrity Over Financial Advice"
 };
 
@@ -142,7 +141,7 @@ export const TOOLS_LIST = [
     inputs: ["Installment", "Duration", "Assumed Rate"],
     outputType: "Growth Illustration",
     actionText: "View Illustration",
-    learningLinkId: "market-basics",
+    learningLinkId: "market-investing-basics",
     icon: <TrendingUp className="w-5 h-5" />
   },
   {
@@ -153,7 +152,7 @@ export const TOOLS_LIST = [
     inputs: ["Emotional Responses", "Scenario Choices"],
     outputType: "Behavioral Archetype",
     actionText: "Start Reflection",
-    learningLinkId: "market-basics",
+    learningLinkId: "market-investing-basics",
     icon: <BrainCircuit className="w-5 h-5" />
   },
   {
@@ -164,7 +163,7 @@ export const TOOLS_LIST = [
     inputs: ["Loan Amount", "Interest Rate", "Tenure"],
     outputType: "Amortization View",
     actionText: "Calculate Estimate",
-    learningLinkId: "pf-basics",
+    learningLinkId: "pf-foundations",
     icon: <CreditCard className="w-5 h-5" />
   },
   {
@@ -175,7 +174,7 @@ export const TOOLS_LIST = [
     inputs: ["Ownership Count", "Capital Range", "Liability Preference"],
     outputType: "Structural Comparison",
     actionText: "Compare Structures",
-    learningLinkId: "business-awareness",
+    learningLinkId: "business-msme-logic",
     icon: <GitMerge className="w-5 h-5" />
   },
   {
@@ -186,7 +185,7 @@ export const TOOLS_LIST = [
     inputs: ["Entity Type", "Turnover Range"],
     outputType: "Readiness Roadmap",
     actionText: "Start Review",
-    learningLinkId: "business-awareness",
+    learningLinkId: "business-msme-logic",
     icon: <ClipboardCheck className="w-5 h-5" />
   },
   {
@@ -197,7 +196,7 @@ export const TOOLS_LIST = [
     inputs: ["Assets", "Liabilities"],
     outputType: "Net Worth Awareness",
     actionText: "View Snapshot",
-    learningLinkId: "pf-basics",
+    learningLinkId: "pf-foundations",
     icon: <Layers className="w-5 h-5" />
   },
   {
@@ -208,7 +207,7 @@ export const TOOLS_LIST = [
     inputs: ["Net Income", "Needs", "Wants", "Savings"],
     outputType: "Resource Allocation Perspective",
     actionText: "Plan Allocation",
-    learningLinkId: "pf-basics",
+    learningLinkId: "pf-foundations",
     icon: <LayoutDashboard className="w-5 h-5" />
   }
 ];
@@ -246,24 +245,28 @@ export const PROCESS_STEPS = [
 
 export const CORE_OFFERINGS = [
   {
+    id: "learn",
     title: "Learning Tracks",
     description: "Comprehensive modules covering Indian taxes, market behavior, and personal finance.",
     icon: <BookOpen className="w-8 h-8 text-[#1FA67A]" />,
     actionText: "Explore Tracks"
   },
   {
+    id: "tools",
     title: "Planning Tools",
     description: "Simulators calibrated for Indian income slabs, SIP growth, and loan amortization.",
     icon: <Calculator className="w-8 h-8 text-[#1FA67A]" />,
     actionText: "View Tools"
   },
   {
+    id: "compliance",
     title: "Compliance Roadmaps",
     description: "Informational checklists and timelines for individual and business statutory needs.",
-    icon: <ClipboardCheck className="w-8 h-8 text-[#1FA67A]" />,
+    icon: <ClipboardCheck size={32} className="text-[#1FA67A]" />,
     actionText: "Check Readiness"
   },
   {
+    id: "directory",
     title: "Expert Gateway",
     description: "A neutral directory of verified independent professionals for specialized advice.",
     icon: <Users className="w-8 h-8 text-[#1FA67A]" />,

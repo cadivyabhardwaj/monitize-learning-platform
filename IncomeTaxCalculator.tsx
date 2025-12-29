@@ -1,6 +1,6 @@
+
 import React, { useState, useMemo } from 'react';
-// Fix: Added TrendingUp to the imports from lucide-react
-import { Calculator, Info, AlertTriangle, ArrowLeft, RefreshCcw, Scale, Building, Briefcase, Landmark, PieChart, Users, ChevronDown, TrendingUp } from 'lucide-react';
+import { Calculator, Info, AlertTriangle, ArrowLeft, RefreshCcw, Scale, Building, Briefcase, Landmark, PieChart, Users, ChevronDown, TrendingUp, GitCompare, Zap } from 'lucide-react';
 
 /**
  * Indian Tax Architecture Constants
@@ -111,11 +111,9 @@ const IncomeTaxCalculator = ({ onBack }: { onBack: () => void }) => {
     
     const netSalaryIncome = Math.max(0, income.salary - stdDedSalary);
 
-    // House Property: (Rent - 30% Std Ded) - Interest
     const nav = income.housePropertyRent * 0.7;
     const netHousePropIncome = nav - income.housePropertyInterest;
 
-    // 2. Gross Total Income (GTI)
     const gti = netSalaryIncome + 
                 netHousePropIncome + 
                 income.businessProfession + 
@@ -123,7 +121,6 @@ const IncomeTaxCalculator = ({ onBack }: { onBack: () => void }) => {
                 income.capitalGainsLTCG + 
                 income.otherSources;
 
-    // 3. Total Deductions (Applicable only in Old Regime)
     let totalDeductions = 0;
     if (profile.regime === 'old') {
       const capped80C = Math.min(deductions.sec80C, TAX_CONFIG.LIMITS.SEC_80C);
@@ -131,10 +128,8 @@ const IncomeTaxCalculator = ({ onBack }: { onBack: () => void }) => {
       totalDeductions = capped80C + capped80D + deductions.sec80TTA + deductions.hraExemption;
     }
 
-    // 4. Taxable Income
     const taxableIncome = Math.max(0, gti - totalDeductions);
 
-    // 5. Slab Computation
     let baseTax = 0;
     const slabs = profile.regime === 'new' 
       ? TAX_CONFIG.NEW_REGIME.slabs 
@@ -152,7 +147,6 @@ const IncomeTaxCalculator = ({ onBack }: { onBack: () => void }) => {
       if (remainingIncome <= 0) break;
     }
 
-    // 6. Rebate u/s 87A
     let rebate = 0;
     const rebateLimit = profile.regime === 'new' ? TAX_CONFIG.NEW_REGIME.rebateLimit : TAX_CONFIG.OLD_REGIME.rebateLimit;
     if (taxableIncome <= rebateLimit) {
@@ -193,7 +187,7 @@ const IncomeTaxCalculator = ({ onBack }: { onBack: () => void }) => {
         className="flex items-center space-x-2 text-primary/40 hover:text-primary mb-8 font-bold text-xs uppercase tracking-widest transition-colors"
       >
         <ArrowLeft size={16} />
-        <span>Return to Utilities</span>
+        <span>Return to Dashboard</span>
       </button>
 
       <div className="grid lg:grid-cols-12 gap-12">
@@ -201,103 +195,101 @@ const IncomeTaxCalculator = ({ onBack }: { onBack: () => void }) => {
         <div className="lg:col-span-5 space-y-8">
           <header>
             <h2 className="text-3xl font-poppins font-bold text-primary mb-2">Income Tax Simulator</h2>
-            <p className="text-primary/60 text-sm leading-relaxed">
-              This conceptual simulator models the structural flow of the Indian Income Tax Act (FY 24-25).
+            <p className="text-primary/60 text-sm leading-relaxed font-medium">
+              Illustrative modeling of the Indian Income Tax Act flow for FY 24-25.
             </p>
           </header>
 
           {/* Assessee Profile Section */}
-          <section className="bg-white rounded-[32px] p-8 border border-primary/5 shadow-sm space-y-6">
-            <h3 className="text-[10px] font-bold text-primary/30 uppercase tracking-[0.2em] mb-4 flex items-center gap-2">
-              <Users size={14} className="text-accent" />
-              Assessee Profile
-            </h3>
-            
-            <div className="grid grid-cols-2 gap-4">
-              <div className="col-span-2">
-                <label className="block text-[10px] font-bold text-primary/40 uppercase tracking-widest mb-3">Tax Regime Choice</label>
-                <div className="flex gap-2">
+          <section className="bg-white rounded-[40px] p-8 border border-primary/5 shadow-sm space-y-8">
+            <div className="flex items-center justify-between">
+               <h3 className="text-[10px] font-black text-primary/30 uppercase tracking-[0.3em] flex items-center gap-2">
+                 <Users size={14} className="text-accent" />
+                 Assessee Profile
+               </h3>
+               <div className="flex gap-1 bg-[#F5F7FA] p-1 rounded-xl">
                   {(['new', 'old'] as const).map(r => (
                     <button
                       key={r}
                       onClick={() => setProfile(p => ({ ...p, regime: r }))}
-                      className={`flex-1 py-3 rounded-xl text-xs font-bold capitalize transition-all ${profile.regime === r ? 'bg-primary text-white shadow-lg' : 'bg-[#F5F7FA] text-primary/40 hover:bg-primary/5'}`}
+                      className={`px-4 py-2 rounded-lg text-[10px] font-black uppercase tracking-widest transition-all ${profile.regime === r ? 'bg-white text-accent shadow-sm' : 'text-primary/30 hover:text-primary/60'}`}
                     >
-                      {r} Regime
+                      {r}
                     </button>
                   ))}
-                </div>
-              </div>
-
+               </div>
+            </div>
+            
+            <div className="grid grid-cols-2 gap-6">
               <div>
-                <label htmlFor="assessee-type" className="block text-[10px] font-bold text-primary/40 uppercase tracking-widest mb-3">Entity Type</label>
+                <label htmlFor="assessee-type" className="block text-[10px] font-bold text-primary/40 uppercase tracking-widest mb-3 ml-1">Entity Type</label>
                 <div className="relative">
                   <select 
                     id="assessee-type"
                     value={profile.assesseeType}
                     onChange={(e) => setProfile(p => ({ ...p, assesseeType: e.target.value as AssesseeType }))}
-                    className="w-full bg-[#F5F7FA] border-none rounded-xl pl-4 pr-10 py-3 text-xs font-bold text-primary outline-none focus:ring-2 focus:ring-accent appearance-none"
+                    className="w-full bg-[#F5F7FA] border-none rounded-2xl pl-4 pr-10 py-4 text-xs font-bold text-primary outline-none focus:ring-2 focus:ring-accent appearance-none"
                   >
                     <option value="INDIVIDUAL">Individual</option>
                     <option value="HUF">HUF</option>
                   </select>
-                  <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 text-primary/20 pointer-events-none" size={14} />
+                  <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 text-primary/20 pointer-events-none" size={14} />
                 </div>
               </div>
 
               <div>
-                <label htmlFor="age-category" className="block text-[10px] font-bold text-primary/40 uppercase tracking-widest mb-3">Age Group</label>
+                <label htmlFor="age-category" className="block text-[10px] font-bold text-primary/40 uppercase tracking-widest mb-3 ml-1">Age Group</label>
                 <div className="relative">
                   <select 
                     id="age-category"
                     value={profile.ageCategory}
                     onChange={(e) => setProfile(p => ({ ...p, ageCategory: e.target.value as AgeCategory }))}
-                    className="w-full bg-[#F5F7FA] border-none rounded-xl pl-4 pr-10 py-3 text-xs font-bold text-primary outline-none focus:ring-2 focus:ring-accent appearance-none"
+                    className="w-full bg-[#F5F7FA] border-none rounded-2xl pl-4 pr-10 py-4 text-xs font-bold text-primary outline-none focus:ring-2 focus:ring-accent appearance-none"
                   >
                     <option value="NORMAL">Below 60</option>
                     <option value="SENIOR">60 to 79</option>
-                    <option value="SUPER_SENIOR">80 and Above</option>
+                    <option value="SUPER_SENIOR">80+</option>
                   </select>
-                  <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 text-primary/20 pointer-events-none" size={14} />
+                  <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 text-primary/20 pointer-events-none" size={14} />
                 </div>
               </div>
 
               <div className="col-span-2">
-                <label htmlFor="residential-status" className="block text-[10px] font-bold text-primary/40 uppercase tracking-widest mb-3">Residential Status</label>
+                <label htmlFor="residential-status" className="block text-[10px] font-bold text-primary/40 uppercase tracking-widest mb-3 ml-1">Residential Status</label>
                 <div className="relative">
                   <select 
                     id="residential-status"
                     value={profile.residentialStatus}
                     onChange={(e) => setProfile(p => ({ ...p, residentialStatus: e.target.value as ResidentialStatus }))}
-                    className="w-full bg-[#F5F7FA] border-none rounded-xl pl-4 pr-10 py-3 text-xs font-bold text-primary outline-none focus:ring-2 focus:ring-accent appearance-none"
+                    className="w-full bg-[#F5F7FA] border-none rounded-2xl pl-4 pr-10 py-4 text-xs font-bold text-primary outline-none focus:ring-2 focus:ring-accent appearance-none"
                   >
                     <option value="RESIDENT">Resident Indian</option>
                     <option value="RNOR">RNOR</option>
-                    <option value="NRI">Non-Resident (NRI)</option>
+                    <option value="NRI">Non-Resident</option>
                   </select>
-                  <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 text-primary/20 pointer-events-none" size={14} />
+                  <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 text-primary/20 pointer-events-none" size={14} />
                 </div>
               </div>
             </div>
           </section>
 
           {/* Heads of Income Section */}
-          <section className="bg-white rounded-[32px] p-8 border border-primary/5 shadow-sm space-y-6">
-            <h3 className="text-[10px] font-bold text-primary/30 uppercase tracking-[0.2em] mb-4 flex items-center gap-2">
+          <section className="bg-white rounded-[40px] p-8 border border-primary/5 shadow-sm space-y-8">
+            <h3 className="text-[10px] font-black text-primary/30 uppercase tracking-[0.3em] flex items-center gap-2">
               <PieChart size={14} className="text-accent" />
               Heads of Income
             </h3>
             
-            <div className="space-y-5">
+            <div className="space-y-6">
               {[
                 { label: 'Income from Salary (Gross)', key: 'salary', icon: <Landmark size={14} /> },
                 { label: 'Business / Profession Income', key: 'businessProfession', icon: <Briefcase size={14} /> },
-                { label: 'Short Term Capital Gains (STCG)', key: 'capitalGainsSTCG', icon: <TrendingUp size={14} /> },
-                { label: 'Long Term Capital Gains (LTCG)', key: 'capitalGainsLTCG', icon: <TrendingUp size={14} /> },
-                { label: 'Income from Other Sources', key: 'otherSources', icon: <Scale size={14} /> },
+                { label: 'STCG (Capital Gains)', key: 'capitalGainsSTCG', icon: <TrendingUp size={14} /> },
+                { label: 'LTCG (Capital Gains)', key: 'capitalGainsLTCG', icon: <TrendingUp size={14} /> },
+                { label: 'Other Sources', key: 'otherSources', icon: <Scale size={14} /> },
               ].map(head => (
                 <div key={head.key}>
-                  <label htmlFor={`income-${head.key}`} className="block text-[9px] font-bold text-primary/40 uppercase mb-2 flex items-center gap-1">
+                  <label htmlFor={`income-${head.key}`} className="block text-[9px] font-bold text-primary/40 uppercase mb-3 ml-1 flex items-center gap-2">
                     {head.icon} {head.label}
                   </label>
                   <div className="relative">
@@ -307,189 +299,129 @@ const IncomeTaxCalculator = ({ onBack }: { onBack: () => void }) => {
                       type="number"
                       value={income[head.key as keyof IncomeHeads] || ''}
                       onChange={(e) => handleIncomeChange(head.key as keyof IncomeHeads, e.target.value)}
-                      className="w-full bg-[#F5F7FA] border-none rounded-xl pl-10 pr-6 py-3 font-bold text-primary focus:ring-2 focus:ring-accent outline-none text-sm"
+                      className="w-full bg-[#F5F7FA] border-none rounded-2xl pl-10 pr-6 py-4 font-bold text-primary focus:ring-2 focus:ring-accent outline-none text-sm transition-all"
                       placeholder="0"
                     />
                   </div>
                 </div>
               ))}
-
-              <div className="pt-4 border-t border-primary/5 space-y-5">
-                <div>
-                  <label htmlFor="hp-rent" className="block text-[9px] font-bold text-primary/40 uppercase mb-2 flex items-center gap-1">
-                    <Building size={14} /> House Property (Gross Annual Rent)
-                  </label>
-                  <div className="relative">
-                    <span className="absolute left-4 top-1/2 -translate-y-1/2 text-primary/20 font-bold text-sm">₹</span>
-                    <input 
-                      id="hp-rent"
-                      type="number"
-                      value={income.housePropertyRent || ''}
-                      onChange={(e) => handleIncomeChange('housePropertyRent', e.target.value)}
-                      className="w-full bg-[#F5F7FA] border-none rounded-xl pl-10 pr-6 py-3 font-bold text-primary focus:ring-2 focus:ring-accent outline-none text-sm"
-                      placeholder="0"
-                    />
-                  </div>
-                  <p className="mt-2 text-[9px] text-primary/30 italic leading-relaxed">A 30% statutory deduction is automatically computed on net rental income.</p>
-                </div>
-
-                <div>
-                  <label htmlFor="hp-interest" className="block text-[9px] font-bold text-primary/40 uppercase mb-2">Interest on Housing Loan (u/s 24b)</label>
-                  <div className="relative">
-                    <span className="absolute left-4 top-1/2 -translate-y-1/2 text-primary/20 font-bold text-sm">₹</span>
-                    <input 
-                      id="hp-interest"
-                      type="number"
-                      value={income.housePropertyInterest || ''}
-                      onChange={(e) => handleIncomeChange('housePropertyInterest', e.target.value)}
-                      className="w-full bg-[#F5F7FA] border-none rounded-xl pl-10 pr-6 py-3 font-bold text-primary focus:ring-2 focus:ring-accent outline-none text-sm"
-                      placeholder="0"
-                    />
-                  </div>
-                </div>
-              </div>
             </div>
           </section>
 
-          {/* Deductions - Only for Old Regime */}
-          {profile.regime === 'old' && (
-            <section className="bg-white rounded-[32px] p-8 border border-primary/5 shadow-sm space-y-6 animate-in fade-in duration-300">
-              <h3 className="text-[10px] font-bold text-accent uppercase tracking-[0.2em] mb-4">Chapter VI-A Deductions</h3>
-              <div className="space-y-5">
-                <div>
-                  <label htmlFor="deduct-80c" className="block text-[9px] font-bold text-primary/40 uppercase mb-2">Section 80C (Capped at 1.5L)</label>
-                  <input 
-                    id="deduct-80c"
-                    type="number"
-                    value={deductions.sec80C || ''}
-                    onChange={(e) => handleDeductionChange('sec80C', e.target.value)}
-                    className="w-full bg-[#F5F7FA] border-none rounded-xl px-4 py-3 font-bold text-primary focus:ring-2 focus:ring-accent outline-none text-sm"
-                    placeholder="0"
-                  />
-                  <p className="mt-1 text-[8px] text-primary/30 uppercase font-bold tracking-tighter">LIC, EPF, PPF, ELSS, Housing Principal</p>
-                </div>
-                <div>
-                  <label htmlFor="deduct-80d" className="block text-[9px] font-bold text-primary/40 uppercase mb-2">Section 80D (Health Insurance)</label>
-                  <input 
-                    id="deduct-80d"
-                    type="number"
-                    value={deductions.sec80D || ''}
-                    onChange={(e) => handleDeductionChange('sec80D', e.target.value)}
-                    className="w-full bg-[#F5F7FA] border-none rounded-xl px-4 py-3 font-bold text-primary focus:ring-2 focus:ring-accent outline-none text-sm"
-                    placeholder="0"
-                  />
-                </div>
-              </div>
-            </section>
-          )}
-
-          <div className="bg-red-50/50 p-6 rounded-2xl border border-red-100 flex items-start space-x-3">
-            <AlertTriangle className="text-red-400 shrink-0 mt-0.5" size={18} />
-            <p className="text-[10px] text-red-800 leading-relaxed uppercase tracking-wider font-medium">
-              LEGAL NOTICE: This simulator is an educational modeling utility. It does not provide tax advice. Final tax liability should be confirmed by a licensed professional or verified via official government portals.
+          <div className="bg-red-50/50 p-8 rounded-[32px] border border-red-100 flex items-start space-x-4 shadow-sm">
+            <AlertTriangle className="text-red-400 shrink-0 mt-0.5" size={20} />
+            <p className="text-[10px] text-red-900 leading-relaxed uppercase tracking-wider font-bold italic">
+              LEGAL NOTICE: Neutral mathematical modeling. Does not constitute tax advice. Final liability should be verified via licensed professionals or official e-filing portals.
             </p>
           </div>
         </div>
 
-        {/* Output Column */}
+        {/* Output Column - Enhanced with Comparison Logic */}
         <div className="lg:col-span-7 space-y-8">
-          <div className="bg-[#0B1C2D] rounded-[40px] p-8 lg:p-12 text-white relative overflow-hidden flex flex-col h-full shadow-2xl">
-            <div className="flex items-center justify-between mb-12 relative z-10">
-              <h3 className="text-xl font-bold flex items-center space-x-2">
-                <Calculator className="text-accent" size={20} />
+          <div className="bg-[#0B1C2D] rounded-[48px] p-8 lg:p-12 text-white relative overflow-hidden flex flex-col h-full shadow-2xl">
+            
+            {/* Simulation Header */}
+            <div className="flex items-center justify-between mb-16 relative z-10">
+              <h3 className="text-xl font-bold flex items-center space-x-3">
+                <GitCompare className="text-accent" size={24} />
                 <span>Simulation Results</span>
               </h3>
-              <div className="bg-white/5 border border-white/10 px-4 py-1.5 rounded-full flex items-center gap-2">
+              <div className="bg-white/5 border border-white/10 px-6 py-2 rounded-full flex items-center gap-2">
                 <div className="w-2 h-2 rounded-full bg-accent animate-pulse"></div>
-                <span className="text-[10px] font-bold uppercase tracking-widest text-white/60">FY 2024-25 Modeling</span>
+                <span className="text-[10px] font-black uppercase tracking-widest text-white/60">FY 2024-25 Framework</span>
               </div>
             </div>
 
             <div className="grid md:grid-cols-2 gap-12 relative z-10 flex-1">
-              <div className="space-y-10">
-                <div className="space-y-1">
-                  <p className="text-white/40 text-[10px] uppercase font-bold tracking-widest">Gross Total Income (GTI)</p>
-                  <p className="text-3xl font-bold">{formatINR(calculation.gti)}</p>
-                  <p className="text-[9px] text-white/30 italic">Aggregate of net income across all five heads.</p>
+              <div className="space-y-12">
+                <div className="space-y-2">
+                  <p className="text-white/40 text-[10px] uppercase font-black tracking-widest">Gross Total Income (GTI)</p>
+                  <p className="text-4xl font-poppins font-bold">{formatINR(calculation.gti)}</p>
+                  <p className="text-[10px] text-white/20 italic leading-relaxed">Composite sum across all five statutory heads before deductions.</p>
                 </div>
                 
-                <div className="space-y-1">
-                  <p className="text-white/40 text-[10px] uppercase font-bold tracking-widest">Total Taxable Income</p>
-                  <p className="text-3xl font-bold text-accent">{formatINR(calculation.taxableIncome)}</p>
-                  <p className="text-[9px] text-white/30 italic">Income after statutory and Chapter VI-A deductions.</p>
+                <div className="space-y-2">
+                  <p className="text-white/40 text-[10px] uppercase font-black tracking-widest">Total Taxable Base</p>
+                  <p className="text-4xl font-poppins font-bold text-accent">{formatINR(calculation.taxableIncome)}</p>
+                  <p className="text-[10px] text-white/20 italic leading-relaxed">The final sum subject to slab-wise taxation after all adjustments.</p>
                 </div>
 
-                <div className="space-y-4 pt-10 border-t border-white/10">
-                  <div className="flex justify-between items-center">
-                    <span className="text-xs text-white/40 font-medium">Base Slab Tax</span>
+                <div className="space-y-5 pt-12 border-t border-white/5">
+                  <div className="flex justify-between items-center group cursor-help">
+                    <span className="text-xs text-white/40 font-medium group-hover:text-white transition-colors">Base Slab Tax</span>
                     <span className="text-sm font-bold">{formatINR(calculation.baseTax)}</span>
                   </div>
-                  <div className="flex justify-between items-center">
-                    <span className="text-xs text-white/40 font-medium">Rebate u/s 87A</span>
+                  <div className="flex justify-between items-center group cursor-help">
+                    <span className="text-xs text-white/40 font-medium group-hover:text-white transition-colors">Section 87A Rebate</span>
                     <span className="text-sm font-bold text-accent">-{formatINR(calculation.rebate)}</span>
                   </div>
-                  <div className="flex justify-between items-center">
-                    <span className="text-xs text-white/40 font-medium">Health & Education Cess (4%)</span>
+                  <div className="flex justify-between items-center group cursor-help">
+                    <span className="text-xs text-white/40 font-medium group-hover:text-white transition-colors">Statutory Cess (4%)</span>
                     <span className="text-sm font-bold">{formatINR(calculation.cess)}</span>
                   </div>
                 </div>
               </div>
 
-              <div className="bg-white/5 rounded-3xl p-8 border border-white/10 flex flex-col justify-center items-center text-center shadow-inner">
-                <p className="text-white/40 text-[10px] uppercase font-bold tracking-widest mb-4">Total Estimated Tax Payable</p>
-                <p className="text-6xl font-poppins font-bold text-white mb-6 leading-tight">
+              {/* Enhanced Visual Outcome */}
+              <div className="bg-white/[0.03] rounded-[40px] p-10 border border-white/10 flex flex-col justify-center items-center text-center shadow-inner relative group overflow-hidden">
+                <div className="absolute top-0 right-0 p-6 opacity-0 group-hover:opacity-100 transition-opacity">
+                   <Zap size={24} className="text-accent/20" />
+                </div>
+                <p className="text-white/40 text-[10px] font-black uppercase tracking-widest mb-6">Total Estimated Outflow</p>
+                <p className="text-6xl font-poppins font-bold text-white mb-8 leading-tight animate-in zoom-in-95 duration-700">
                   {formatINR(calculation.totalTax)}
                 </p>
-                <div className="w-full h-1 bg-white/5 rounded-full mb-6 overflow-hidden">
-                   <div className="h-full bg-accent transition-all duration-500" style={{ width: calculation.totalTax > 0 ? '70%' : '0%' }}></div>
+                <div className="w-full h-1.5 bg-white/5 rounded-full mb-8 overflow-hidden">
+                   <div className="h-full bg-accent transition-all duration-1000" style={{ width: calculation.totalTax > 0 ? '75%' : '0%' }}></div>
                 </div>
-                <p className="text-xs text-white/40 leading-relaxed max-w-[200px] mx-auto">
-                  Informational total based on the selected {profile.regime} regime parameters.
-                </p>
+                <div className="p-4 bg-white/5 rounded-2xl border border-white/5">
+                   <p className="text-[10px] text-accent font-bold uppercase tracking-widest mb-1">{profile.regime} Regime Active</p>
+                   <p className="text-[9px] text-white/30 italic">Modeled for individual assessee logic.</p>
+                </div>
               </div>
             </div>
 
-            {/* Logical Breakdown Note */}
-            <div className="mt-12 pt-12 border-t border-white/10 relative z-10 grid md:grid-cols-2 gap-8">
-               <div className="space-y-3">
-                  <h4 className="text-[10px] font-bold text-accent uppercase tracking-widest">Structural Flow</h4>
-                  <ul className="text-[10px] text-white/40 space-y-2 list-disc pl-4">
-                    <li>Salary: Reduced by {formatINR(profile.regime === 'new' ? 75000 : 50000)} Standard Deduction.</li>
-                    <li>House Prop: 30% Net Annual Value deduction applied before interest offset.</li>
-                    <li>Limits: Chapter VI-A deductions (Old Regime only) capped at statutory maximums.</li>
-                  </ul>
+            {/* Regime Logic Interaction - EDUCATIONAL ENHANCEMENT */}
+            <div className="mt-16 pt-12 border-t border-white/5 relative z-10">
+               <div className="flex items-center gap-3 mb-8">
+                  <div className="bg-accent/10 p-2 rounded-lg"><Info size={16} className="text-accent" /></div>
+                  <h4 className="text-sm font-bold uppercase tracking-widest">Regime Logic Insight</h4>
                </div>
-               <div className="space-y-3">
-                  <h4 className="text-[10px] font-bold text-accent uppercase tracking-widest">Conceptual Guidance</h4>
-                  <p className="text-[10px] text-white/40 leading-relaxed">
-                    This model assumes standard slab-based taxation. Specific rates for STCG/LTCG on equity or other assets are not modeled individually in this summary simulation but are treated as part of total taxable income for slab estimation.
-                  </p>
+               
+               <div className="grid md:grid-cols-2 gap-12">
+                  <div className="space-y-4">
+                     <p className="text-[10px] font-black text-accent uppercase tracking-widest">Why New Regime?</p>
+                     <p className="text-[11px] text-white/40 leading-relaxed italic">
+                       The New Regime provides lower base slab rates but removes almost all Chapter VI-A deductions. It's conceptually designed to simplify compliance for those without significant home loans or locked-in savings.
+                     </p>
+                  </div>
+                  <div className="space-y-4">
+                     <p className="text-[10px] font-black text-white/40 uppercase tracking-widest">Why Old Regime?</p>
+                     <p className="text-[11px] text-white/40 leading-relaxed italic">
+                       The Old Regime maintains higher slabs but allows for tax efficiency through statutory instruments (PPF, HRA, Insurance). It rewards those who proactively divert income into social security or housing.
+                     </p>
+                  </div>
                </div>
             </div>
 
-            <div className="absolute -bottom-24 -left-24 w-64 h-64 bg-accent/10 rounded-full blur-[100px]" aria-hidden="true"></div>
+            <div className="absolute -bottom-24 -left-24 w-96 h-96 bg-accent/5 rounded-full blur-[120px]" aria-hidden="true"></div>
           </div>
         </div>
       </div>
 
+      {/* Persistent Reset Controls */}
       <div className="mt-16 text-center">
-        <p className="text-[10px] text-primary/30 uppercase tracking-[0.3em] font-bold mb-6">Manage Simulator</p>
+        <p className="text-[10px] text-primary/30 uppercase tracking-[0.4em] font-black mb-8">Interaction Management</p>
         <div className="flex flex-col sm:flex-row justify-center gap-4">
-          <button 
-            onClick={onBack}
-            className="px-8 py-4 bg-[#F5F7FA] text-primary/60 rounded-xl font-bold text-xs uppercase tracking-widest hover:bg-primary/5 transition-all focus:ring-2 focus:ring-accent outline-none"
-          >
-            Other Utilities
-          </button>
           <button 
             onClick={() => {
               setIncome({ salary: 0, housePropertyRent: 0, housePropertyInterest: 0, businessProfession: 0, capitalGainsSTCG: 0, capitalGainsLTCG: 0, otherSources: 0 });
               setDeductions({ sec80C: 0, sec80D: 0, sec80TTA: 0, hraExemption: 0 });
             }}
-            className="px-8 py-4 bg-primary text-white rounded-xl font-bold text-xs uppercase tracking-widest hover:bg-primary/90 transition-all flex items-center justify-center space-x-2 focus:ring-2 focus:ring-accent outline-none"
+            className="px-10 py-5 bg-white border border-primary/5 text-primary/60 rounded-2xl font-bold text-xs uppercase tracking-widest hover:bg-primary/5 transition-all flex items-center justify-center space-x-3 shadow-sm focus:ring-2 focus:ring-accent outline-none"
           >
-            <RefreshCcw size={14} />
-            <span>Reset Data</span>
+            <RefreshCcw size={16} />
+            <span>Clear Scenario Data</span>
           </button>
         </div>
       </div>

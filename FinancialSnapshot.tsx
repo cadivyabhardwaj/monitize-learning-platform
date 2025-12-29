@@ -32,8 +32,9 @@ const FinancialSnapshot = ({ onBack }: { onBack: () => void }) => {
   });
 
   const calculation = useMemo(() => {
-    const totalAssets = Object.values(state.assets).reduce((a, b) => a + b, 0);
-    const totalLiabilities = Object.values(state.liabilities).reduce((a, b) => a + b, 0);
+    // Fixed: Explicitly cast to number[] to resolve unknown type errors in reduction
+    const totalAssets = (Object.values(state.assets) as number[]).reduce((a, b) => a + b, 0);
+    const totalLiabilities = (Object.values(state.liabilities) as number[]).reduce((a, b) => a + b, 0);
     const netWorth = totalAssets - totalLiabilities;
     
     // Logic: What portion of the net worth is actually "ready" for emergency?

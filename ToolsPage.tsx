@@ -1,8 +1,9 @@
 
-import React, { useCallback, useEffect } from 'react';
+import React, { useCallback } from 'react';
+/* Fixed: Ensure useSearchParams is available from react-router-dom */
 import { useSearchParams } from 'react-router-dom';
 import { Calculator, ChevronRight, BookOpen, ArrowRight } from 'lucide-react';
-import { TOOL_CATEGORIES, TOOLS_LIST, BRAND_NAME } from './constants';
+import { TOOL_CATEGORIES, TOOLS_LIST } from './constants';
 import { ServicesCompliance, Disclaimer } from './ComplianceSections';
 import IncomeTaxCalculator from './IncomeTaxCalculator';
 import SIPIllustrator from './SIPIllustrator';
@@ -21,7 +22,7 @@ interface ToolCardProps {
   onSelectTool: (id: string) => void;
 }
 
-const ToolCard = ({ tool, onNavigate, onSelectTool }: ToolCardProps) => (
+const ToolCard: React.FC<ToolCardProps> = ({ tool, onNavigate, onSelectTool }) => (
   <article className="bg-white rounded-[32px] p-8 border border-primary/5 shadow-sm hover:shadow-md transition-all group flex flex-col h-full">
     <div className="mb-6 bg-[#F5F7FA] w-12 h-12 rounded-xl flex items-center justify-center text-accent group-hover:scale-105 transition-transform" aria-hidden="true">
       {tool.icon}
@@ -61,7 +62,7 @@ const ToolCard = ({ tool, onNavigate, onSelectTool }: ToolCardProps) => (
       
       {tool.learningLinkId && (
         <button 
-          onClick={() => onNavigate('learn')}
+          onClick={() => onNavigate(tool.learningLinkId as View)}
           className="w-full bg-transparent text-accent text-xs font-bold uppercase tracking-widest flex items-center justify-center gap-2 py-2 hover:opacity-70 transition-opacity"
         >
           <BookOpen size={14} />
@@ -97,12 +98,14 @@ const ToolsPage = ({ isAuthenticated, onNavigate }: ToolsPageProps) => {
     const newParams = new URLSearchParams(searchParams);
     newParams.set('tool', id);
     setSearchParams(newParams);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }, [searchParams, setSearchParams]);
 
   const handleBack = useCallback(() => {
     const newParams = new URLSearchParams(searchParams);
     newParams.delete('tool');
     setSearchParams(newParams);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }, [searchParams, setSearchParams]);
 
   const filteredTools = activeCategory === 'all' 
