@@ -1,4 +1,5 @@
-import React, { useState, useEffect, useCallback } from 'react';
+
+import React, { useState, useEffect, useLayoutEffect, useCallback } from 'react';
 import { Routes, Route, useNavigate, useLocation } from 'react-router-dom';
 import Navbar from './Navbar';
 import SEOHelmet from './SEOHelmet';
@@ -22,17 +23,19 @@ export default function App() {
   const navigate = useNavigate();
   const location = useLocation();
 
-  useEffect(() => {
+  // Global Navigation Fix: Reset scroll to top on every path change
+  // Use useLayoutEffect to ensure the scroll happens before the browser repaints
+  useLayoutEffect(() => {
     if (location.hash) {
       const id = location.hash.replace('#', '');
       const element = document.getElementById(id);
       if (element) {
         setTimeout(() => element.scrollIntoView({ behavior: 'smooth' }), 100);
+        return;
       }
-    } else {
-      window.scrollTo({ top: 0, behavior: 'auto' });
     }
-  }, [location.pathname, location.hash, location.search]);
+    window.scrollTo(0, 0);
+  }, [location.pathname, location.search]); 
 
   const handleLogin = (user: User) => {
     setAuth({ isAuthenticated: true, user });
@@ -55,7 +58,6 @@ export default function App() {
       }
       path = `${path}${subTarget}`;
     } else if (subTarget) {
-      // Handle legacy paths by redirecting to module runner
       if (['market-basics', 'tax-fundamentals', 'pf-basics'].includes(view)) {
          const moduleIdMap: Record<string, string> = {
            'pf-basics': 'pf-foundations',
@@ -70,11 +72,7 @@ export default function App() {
       }
     }
 
-    if (location.pathname + location.search === path) {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    } else {
-      navigate(path);
-    }
+    navigate(path);
   }, [navigate, location]);
 
   const currentView = location.pathname === '/' ? 'home' : location.pathname.split('/')[1] as View;

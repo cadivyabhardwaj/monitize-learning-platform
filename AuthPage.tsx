@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 /* Fixed: Ensure correct hooks are imported from react-router-dom */
 import { useSearchParams, useNavigate } from 'react-router-dom';
@@ -45,15 +44,13 @@ const AuthPage = ({ onLoginSuccess }: AuthPageProps) => {
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    /* Fixed: Initialize full progress object to match updated User interface */
+    /* Fixed: Corrected progress object literal to strictly match User interface */
     setTimeout(() => {
       onLoginSuccess({
         id: 'u_' + Date.now(),
         fullName: 'Arjun Sharma',
         email: formData.email || 'member@monitize.in',
         progress: {
-          marketBasics: { level: 1, completedLevels: [], lastUnitId: '' },
-          taxBasics: { reviewed: false },
           completedModuleIds: [],
           levelProgress: {}
         }
@@ -64,7 +61,7 @@ const AuthPage = ({ onLoginSuccess }: AuthPageProps) => {
 
   const handleSignUpComplete = () => {
     setLoading(true);
-    /* Fixed: Initialize full progress object to match updated User interface */
+    /* Fixed: Corrected progress object literal to strictly match User interface */
     setTimeout(() => {
       onLoginSuccess({
         id: 'u_' + Date.now(),
@@ -76,8 +73,6 @@ const AuthPage = ({ onLoginSuccess }: AuthPageProps) => {
           experience: formData.experience
         },
         progress: {
-          marketBasics: { level: 1, completedLevels: [], lastUnitId: '' },
-          taxBasics: { reviewed: false },
           completedModuleIds: [],
           levelProgress: {}
         }

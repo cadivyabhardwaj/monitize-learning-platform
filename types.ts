@@ -1,8 +1,7 @@
 
 import React from 'react';
 
-// Shared view type for navigation
-export type View = 'home' | 'learn' | 'tools' | 'about' | 'services' | 'auth' | 'market-basics' | 'tax-fundamentals' | 'pf-basics' | 'business-basics' | 'ai-lab';
+export type View = 'home' | 'learn' | 'tools' | 'about' | 'services' | 'auth' | 'ai-lab' | 'market-basics' | 'tax-fundamentals' | 'pf-basics';
 
 export type LabTool = 
   | 'hub' 
@@ -23,11 +22,42 @@ export type LabTool =
   | 'linguistic-bridge'
   | 'mental-model-matcher';
 
+/* Fixed: Added UserCategory and ExperienceLevel types to match AuthPage and User profile usage */
+export type UserCategory = 'individual' | 'professional' | 'businessowner' | 'student';
+export type ExperienceLevel = 'beginner' | 'intermediate' | 'advanced';
+
 export type LearningMode = 'beginner' | 'standard' | 'deepdive';
+
+export interface AuditEntry {
+  id: string;
+  moduleId?: string;
+  levelId?: number;
+  toolId?: LabTool;
+  timestamp: number;
+  actionType: 'viewed' | 'completed' | 'generated' | 'confirmed';
+  contentSource: 'static' | 'AI-generated' | 'OCR';
+}
+
+export type ModuleStatus = 'not-started' | 'in-progress' | 'completed';
 
 export interface KeyTerm {
   term: string;
   meaning: string;
+}
+
+/* Fixed: Added missing QuizOption interface used in QuizQuestion */
+export interface QuizOption {
+  id: string;
+  text: string;
+  explanation: string;
+}
+
+/* Fixed: Added missing QuizQuestion interface used in ModuleLevel and exported for page imports */
+export interface QuizQuestion {
+  id: string;
+  question: string;
+  correctOptionId: string;
+  options: QuizOption[];
 }
 
 export interface Flashcard {
@@ -48,54 +78,19 @@ export interface OCRInterpretation {
   limitations: string;
 }
 
-export interface OfferingCardProps {
-  title: string;
-  description: string;
-  icon: React.ReactNode;
-}
-
-// User Profile Types
-export type UserCategory = 'individual' | 'professional' | 'businessowner' | 'student' | '';
-export type ExperienceLevel = 'beginner' | 'intermediate' | 'advanced';
-
-// Added LearningUnit and LearningLevel interfaces to fix module page errors
-export interface LearningUnit {
-  id: string;
-  title: string;
-  readingTime: string;
-  content: React.ReactNode;
-}
-
-export interface LearningLevel {
-  id: number;
-  title: string;
-  badge: string;
-  units: LearningUnit[];
-  quiz?: QuizQuestion[];
-}
-
 export interface User {
   id: string;
   fullName: string;
   email: string;
+  /* Fixed: Changed category and experience to use strict types */
   profile?: {
     category: UserCategory;
     interests: string[];
     experience: ExperienceLevel;
   };
   progress: {
-    // Added specific module tracking expected by the dashboard and login logic
-    marketBasics: {
-      level: number;
-      completedLevels: number[];
-      lastUnitId: string;
-    };
-    taxBasics: {
-      reviewed: boolean;
-    };
     completedModuleIds: string[];
-    activeModuleId?: string;
-    levelProgress: Record<string, number>; // moduleId -> levelId
+    levelProgress: Record<string, number>; 
   };
 }
 
@@ -109,27 +104,24 @@ export interface ChatMessage {
   text: string;
 }
 
-// COMPREHENSIVE LEARNING MODULE SCHEMA
 export interface ModuleUnit {
   id: string;
   title: string;
-  durationMins: number;
-  whyThisMatters: string;
+  /* Fixed: Added readingTime and made several fields optional to support standalone learning pages (Market, Tax, PF) */
+  readingTime?: string;
+  durationMins?: number;
+  whyThisMatters?: string;
   content: React.ReactNode | string;
-  actionableNextStep: string;
-  interactiveComponent?: 'SIP_CALC' | 'EMI_CALC' | 'TAX_SLAB_VIEW';
-  // Extended Pedagogy
+  actionableNextStep?: string;
+  /* Fixed: Added metadata fields used in the various learning module registry files */
   structuralExplanation?: string[];
-  accountingContext?: string[];
   legalContext?: string[];
-  decisionTradeOffs?: string[];
+  accountingContext?: string[];
   constraintsAndRisks?: string[];
+  decisionTradeOffs?: string[];
   commonMisinterpretations?: string[];
-}
-
-export interface MythVsFact {
-  myth: string;
-  fact: string;
+  realWorldAnalogies?: string[];
+  reflectionPrompt?: string;
 }
 
 export interface ModuleLevel {
@@ -138,30 +130,14 @@ export interface ModuleLevel {
   badge: string;
   units: ModuleUnit[];
   quiz: QuizQuestion[];
-  mythVsFact?: MythVsFact[];
+  /* Fixed: Added optional metadata fields for Levels, including reflectionPrompt used in registry files */
+  mythVsFact?: { myth: string; fact: string }[];
   realWorldAnalogies?: string[];
   reflectionPrompt?: string;
 }
 
-export interface QuizOption {
-  id: string;
-  text: string;
-  explanation: string;
-}
-
-export interface QuizQuestion {
-  id: string;
-  question: string;
-  correctOptionId: string;
-  options: QuizOption[];
-}
-
-export interface ModuleCompliance {
-  needsLegalReview: boolean;
-  regulatedTopic: boolean;
-  regulatoryReferences: string[];
-  lastReviewedDate: string;
-}
+/* Fixed: Export LearningLevel as an alias for ModuleLevel to support legacy page imports */
+export type LearningLevel = ModuleLevel;
 
 export type ModuleCategory = 'Personal' | 'Tax' | 'Business' | 'Markets' | 'Technical';
 
@@ -173,9 +149,14 @@ export interface LearningModule {
   detailedDescription: string;
   learningObjectives: string[];
   estimatedEffort: 'Light' | 'Fundamental' | 'Deep' | 'Professional';
-  iconName: string; // Used to map Lucide icons
+  iconName: string;
   levels: ModuleLevel[];
-  compliance: ModuleCompliance;
+  compliance: {
+    needsLegalReview: boolean;
+    regulatedTopic: boolean;
+    regulatoryReferences: string[];
+    lastReviewedDate: string;
+  };
   seo: {
     metaTitle: string;
     metaDescription: string;
